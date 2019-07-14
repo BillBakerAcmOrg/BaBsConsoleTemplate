@@ -4,7 +4,7 @@ using Serilog;
 using System;
 using System.IO;
 
-namespace NetGenCLI
+namespace BABsConsoleTemplate
 {
     partial class Program
     {
