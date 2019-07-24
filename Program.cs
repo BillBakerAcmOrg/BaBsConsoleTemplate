@@ -10,7 +10,7 @@ namespace BABsConsoleTemplate
     {
         static void Main(string[] args)
         {
-            var serviceProvider = ConfigureServices();
+            var serviceProvider = ConfigureServices(args);
             var app = serviceProvider.GetRequiredService<Application>();
             app.Execute();
             
@@ -18,9 +18,9 @@ namespace BABsConsoleTemplate
             Console.ReadKey();
         }
 
-        public static IServiceProvider ConfigureServices()
+        public static IServiceProvider ConfigureServices(string[] args)
         {
-            var configuration = BuildConfiguration();
+            var configuration = BuildConfiguration(args);
 
             var services = new ServiceCollection()
                 .AddSingleton<IConfiguration>(configuration)
@@ -52,7 +52,7 @@ namespace BABsConsoleTemplate
             return services.BuildServiceProvider();
         }
 
-        public static IConfiguration BuildConfiguration()
+        public static IConfiguration BuildConfiguration(string[] args)
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIROMENT");
             if (string.IsNullOrWhiteSpace(environment))
@@ -63,6 +63,7 @@ namespace BABsConsoleTemplate
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{environment}.json")
                 .AddEnvironmentVariables()
+                .AddCommandLine(args)
                 .Build();
         }
     }
